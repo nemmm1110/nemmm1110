@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Matrix of Justice</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+      font-family: 'Arial', sans-serif;
+    }
+    .rain {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+    .drop {
+      position: absolute;
+      bottom: 100%;
+      width: 2px;
+      height: 15px;
+      background: rgba(255, 255, 255, 0.7);
+      animation: fall linear infinite;
+    }
+    @keyframes fall {
+      to { transform: translateY(100vh); }
+    }
+    .thunder {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0);
+      opacity: 0;
+      animation: thunderFlash 5s infinite;
+    }
+    @keyframes thunderFlash {
+      0% { opacity: 0; }
+      5% { opacity: 0.3; }
+      6% { opacity: 0; }
+      7% { opacity: 0.2; }
+      8% { opacity: 0; }
+      100% { opacity: 0; }
+    }
+    .hero {
+      position: absolute;
+      top: 10%;
+      left: 10%;
+      animation: fly 8s infinite ease-in-out;
+    }
+    @keyframes fly {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      50% { transform: translate(50px, -50px) rotate(15deg); }
+      100% { transform: translate(0, 0) rotate(0deg); }
+    }
+    .batman {
+      position: absolute;
+      bottom: 0;
+      right: 10%;
+      width: 200px;
+      animation: batmanSwing 6s infinite ease-in-out;
+    }
+    @keyframes batmanSwing {
+      0% { transform: rotate(0deg); }
+      50% { transform: rotate(-10deg); }
+      100% { transform: rotate(0deg); }
+    }
+    .neon-text {
+      text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
+    }
+    .btn-hero {
+      transition: all 0.3s ease;
+    }
+    .btn-hero:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 20px #00ffcc;
+    }
+    .result-slide {
+      animation: slideIn 0.5s ease-out;
+    }
+    @keyframes slideIn {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="relative text-white">
+  <h1 class="text-5xl font-bold text-center mt-10 neon-text">Matrix of Justice</h1>
+  <p class="text-center text-lg mb-6">Calculated by the Dark Knight & Man of Steel!</p>
+
+  <!-- Rain Effect -->
+  <div class="rain">
+    <script>
+      function createRain() {
+        for (let i = 0; i < 100; i++) {
+          const drop = document.createElement('div');
+          drop.className = 'drop';
+          drop.style.left = Math.random() * 100 + 'vw';
+          drop.style.animationDuration = Math.random() * 0.5 + 0.5 + 's';
+          document.querySelector('.rain').appendChild(drop);
+        }
+      }
+      createRain();
+    </script>
+  </div>
+
+  <!-- Thunder Effect -->
+  <div class="thunder"></div>
+
+  <!-- Superman -->
+  <img src="https://i.imgur.com/abc123xyz.jpg" alt="Superman" class="hero" style="width: 150px;">
+
+  <!-- Batman on Penthouse -->
+  <img src="https://i.imgur.com/def456uvw.jpg" alt="Batman" class="batman">
+
+  <!-- Input Form -->
+  <div class="bg-gray-900 bg-opacity-80 p-8 rounded-lg shadow-lg max-w-2xl mx-auto mt-20 relative z-10">
+    <h2 class="text-3xl font-semibold mb-6 text-cyan-300">Enter the Matrices, Heroes!</h2>
+    
+    <!-- Matrix A Dimensions -->
+    <div class="mb-6">
+      <label class="block text-cyan-200">Matrix A (Rows × Columns):</label>
+      <input id="rowsA" type="number" min="1" value="2" class="w-20 p-2 border rounded mr-2 bg-gray-800 text-white">
+      <input id="colsA" type="number" min="1" value="2" class="w-20 p-2 border rounded bg-gray-800 text-white">
+    </div>
+    
+    <!-- Matrix B Dimensions -->
+    <div class="mb-6">
+      <label class="block text-cyan-200">Matrix B (Rows × Columns):</label>
+      <input id="rowsB" type="number" min="1" value="2" class="w-20 p-2 border rounded mr-2 bg-gray-800 text-white">
+      <input id="colsB" type="number" min="1" value="2" class="w-20 p-2 border rounded bg-gray-800 text-white">
+    </div>
+    
+    <!-- Matrix A Input -->
+    <div class="mb-6">
+      <label class="block text-cyan-200">Enter Matrix A:</label>
+      <div id="matrixAInputs" class="grid gap-2"></div>
+    </div>
+    
+    <!-- Matrix B Input -->
+    <div class="mb-6">
+      <label class="block text-cyan-200">Enter Matrix B:</label>
+      <div id="matrixBInputs" class="grid gap-2"></div>
+    </div>
+    
+    <!-- Calculate Button -->
+    <button onclick="calculateMatrix()" class="w-full bg-blue-700 text-white p-3 rounded-lg btn-hero text-xl">
+      Unleash the Calculation Power!
+    </button>
+  </div>
+
+  <!-- Result -->
+  <div id="result" class="mt-10 bg-gray-900 bg-opacity-80 p-6 rounded-lg shadow-lg max-w-2xl mx-auto hidden result-slide">
+    <h2 class="text-3xl font-semibold mb-4 text-yellow-300">The Result of Justice</h2>
+    <p class="text-cyan-200 mb-4">Witness the power of the Bat and the Man of Steel!</p>
+    <div id="resultMatrix" class="grid gap-2"></div>
+  </div>
+
+  <script>
+    // Generate input fields for matrix
+    function generateMatrixInputs() {
+      const rowsA = parseInt(document.getElementById("rowsA").value);
+      const colsA = parseInt(document.getElementById("colsA").value);
+      const rowsB = parseInt(document.getElementById("rowsB").value);
+      const colsB = parseInt(document.getElementById("colsB").value);
+
+      const matrixAInputs = document.getElementById("matrixAInputs");
+      matrixAInputs.innerHTML = "";
+      matrixAInputs.style.gridTemplateColumns = `repeat(${colsA}, minmax(0, 1fr))`;
+      for (let i = 0; i < rowsA; i++) {
+        for (let j = 0; j < colsA; j++) {
+          matrixAInputs.innerHTML += `<input type="number" id="a_${i}_${j}" value="0" class="p-2 border rounded text-center bg-gray-800 text-white">`;
+        }
+      }
+
+      const matrixBInputs = document.getElementById("matrixBInputs");
+      matrixBInputs.innerHTML = "";
+      matrixBInputs.style.gridTemplateColumns = `repeat(${colsB}, minmax(0, 1fr))`;
+      for (let i = 0; i < rowsB; i++) {
+        for (let j = 0; j < colsB; j++) {
+          matrixBInputs.innerHTML += `<input type="number" id="b_${i}_${j}" value="0" class="p-2 border rounded text-center bg-gray-800 text-white">`;
+        }
+      }
+    }
+
+    // Calculate matrix multiplication
+    function calculateMatrix() {
+      const rowsA = parseInt(document.getElementById("rowsA").value);
+      const colsA = parseInt(document.getElementById("colsA").value);
+      const rowsB = parseInt(document.getElementById("rowsB").value);
+      const colsB = parseInt(document.getElementById("colsB").value);
+
+      if (colsA !== rowsB) {
+        alert("Error: Columns of Matrix A must equal rows of Matrix B, mortal!");
+        return;
+      }
+
+      const matrixA = [];
+      for (let i = 0; i < rowsA; i++) {
+        const row = [];
+        for (let j = 0; j < colsA; j++) {
+          row.push(parseFloat(document.getElementById(`a_${i}_${j}`).value));
+        }
+        matrixA.push(row);
+      }
+
+      const matrixB = [];
+      for (let i = 0; i < rowsB; i++) {
+        const row = [];
+        for (let j = 0; j < colsB; j++) {
+          row.push(parseFloat(document.getElementById(`b_${i}_${j}`).value));
+        }
+        matrixB.push(row);
+      }
+
+      const result = [];
+      for (let i = 0; i < rowsA; i++) {
+        const row = [];
+        for (let j = 0; j < colsB; j++) {
+          let sum = 0;
+          for (let k = 0; k < colsA; k++) {
+            sum += matrixA[i][k] * matrixB[k][j];
+          }
+          row.push(sum);
+        }
+        result.push(row);
+      }
+
+      const resultMatrix = document.getElementById("resultMatrix");
+      resultMatrix.innerHTML = "";
+      resultMatrix.style.gridTemplateColumns = `repeat(${colsB}, minmax(0, 1fr))`;
+      for (let i = 0; i < rowsA; i++) {
+        for (let j = 0; j < colsB; j++) {
+          resultMatrix.innerHTML += `<div class="p-2 border rounded text-center bg-gray-700">${result[i][j]}</div>`;
+        }
+      }
+      document.getElementById("result").classList.remove("hidden");
+
+      // Flash thunder effect on calculation
+      const thunder = document.querySelector('.thunder');
+      thunder.style.opacity = 0.5;
+      setTimeout(() => thunder.style.opacity = 0, 500);
+    }
+
+    // Initialize inputs on page load
+    generateMatrixInputs();
+
+    // Update inputs when dimensions change
+    document.getElementById("rowsA").addEventListener("change", generateMatrixInputs);
+    document.getElementById("colsA").addEventListener("change", generateMatrixInputs);
+    document.getElementById("rowsB").addEventListener("change", generateMatrixInputs);
+    document.getElementById("colsB").addEventListener("change", generateMatrixInputs);
+  </script>
+</body>
+</html>
